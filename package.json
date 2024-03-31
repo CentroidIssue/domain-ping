@@ -1,15 +1,19 @@
 {
-  "name": "app",
-  "version": "1.0.50",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
-  },
   "dependencies": {
-    "elysia": "latest"
+    "ejs": "^3.1.9",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.0",
+    "sqlite3": "^5.1.7",
+    "ws": "^8.16.0"
   },
-  "devDependencies": {
-    "bun-types": "latest"
+  "name": "domain-ping",
+  "description": "## Getting Started To get started with this template, simply paste this command into your terminal: ```bash bun create elysia ./elysia-example ```",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "run": "node index.js",
+    "dev": "nodemon index.js"
   },
-  "module": "src/index.js"
+  "author": "",
+  "license": "ISC"
 }
