@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expose the port your Node.js app is listening on
-EXPOSE 2210
+EXPOSE 10000
 EXPOSE 1772
 
 # Start the Node.js app

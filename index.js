@@ -7,7 +7,7 @@ const Database = require('./database.js');
 const database = new Database.Database();
 
 const app = express();
-const port = 2210;
+const port = 10000;
 
 // Set 'views' directory for any views 
 // being rendered res.render()
