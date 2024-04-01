@@ -81,9 +81,9 @@ class Database{
     }
 
     insertData(id, value) {
-        return new Promise((resolve, reject) => {
-            timestamp = new Date().getTime();
-            db.run(`INSERT INTO linker(id, value) VALUES(?, ?, ?, ?)`, [id, value, timestamp, timestamp], (err) => {
+        return new Promise(async (resolve, reject) => {
+            const timestamp = await new Date().getTime();
+            db.run(`INSERT INTO linker(id, value, last_post, previous_post) VALUES(?, ?, ?, ?)`, [id, value, timestamp, timestamp], (err) => {
                 if (err) {
                     console.error(err.message);
                     reject(err);
