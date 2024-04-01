@@ -92,7 +92,7 @@ app.post('/id/:id', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
+    console.log(`Server listening at http://0.0.0.0:${port}`);
 });
 
 // Create a WebSocket server
