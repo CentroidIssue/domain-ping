@@ -35,12 +35,10 @@ app.get('/ping', async (req, res) => {
             database.updateLastPost(element.id).then().catch(err => {
                 console.error(err);
             });
-            const response = await fetch(element.value);
-            const body = await getBody(response);
-            return {url: element.value, value: body};
+            fetch(element.value);
         });
         const ret = await Promise.all(promises);
-        res.send(ret );
+        res.send("Ping all domains");
     } catch (err) {
         console.error(err);
         res.status(500).send(err);
