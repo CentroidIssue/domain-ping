@@ -55,6 +55,19 @@ class Database{
         });
     }
 
+    updateLastPost(id) {
+        return new Promise(async (resolve, reject) => {
+            const timestamp = new Date().getTime();
+            db.run(`UPDATE linker SET previous_post = last_post, last_post = ? WHERE id = ?`, [timestamp, id], (err) => {
+                if (err) {
+                    console.error(err.message);
+                    reject(err);
+                }
+                resolve();
+            });
+        });
+    }
+
     deleteData(id) {
         return new Promise((resolve, reject) => {
             db.run(`DELETE FROM linker WHERE id = ?`, id, (err) => {
@@ -69,7 +82,8 @@ class Database{
 
     insertData(id, value) {
         return new Promise((resolve, reject) => {
-            db.run(`INSERT INTO linker(id, value) VALUES(?, ?)`, [id, value], (err) => {
+            timestamp = new Date().getTime();
+            db.run(`INSERT INTO linker(id, value) VALUES(?, ?, ?, ?)`, [id, value, timestamp, timestamp], (err) => {
                 if (err) {
                     console.error(err.message);
                     reject(err);

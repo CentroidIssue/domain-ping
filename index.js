@@ -22,23 +22,37 @@ app.get('/', (req, res) => {
     res.render('index.ejs', { title: 'Domain Pinger' });
 });
 
-app.get('/:id', (req, res) => {
+app.get('/ping', async (req, res) => {
+    try {
+        const data = await database.getData();
+        const promises = data.map(async element => {
+            database.updateLastPost(element.id).then().catch(err => {
+                console.error(err);
+            });
+            const response = await fetch(element.value);
+            const body = await getBody(response);
+            return {url: element.value, value: body};
+        });
+        const ret = await Promise.all(promises);
+        res.send(ret );
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
+});
+
+app.get('/id/:id', (req, res) => {
     database.getDataById(req.params.id).then(async data => {
         const response = await fetch(data.value);
         //console.log(response);
-        let body;
-        if (response.headers.get('content-type').includes('application/json')) {
-            body = await response.json();
-        } else {
-            body = await response.text();
-        }
+        const body = await getBody(response);
         res.send(body);
     }).catch(err => {
         res.send(err);
     });
 });
 
-app.post('/:id', (req, res) => {
+app.post('/id/:id', (req, res) => {
     const query = req.query;
     if (query.hasOwnProperty('type')) {
         if (query.type === 'update' && query.hasOwnProperty('value')){
@@ -94,3 +108,13 @@ wss.on('connection', ws => {
         });
     }, 1000);
 });
+
+async function getBody(response){
+    let body;
+    if (response.headers.get('content-type').includes('application/json')) {
+        body = await response.json();
+    } else {
+        body = await response.text();
+    }
+    return body;
+}
