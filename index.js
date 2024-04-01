@@ -18,8 +18,14 @@ app.use(express.static('public'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
-app.get('/', (req, res) => {
-    res.render('index.ejs', { title: 'Domain Pinger' });
+app.get('/', async (req, res) => {
+    try {
+        const data = await database.getData();
+        res.render('index.ejs', { title: 'Domain Pinger', data: data });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);
+    }
 });
 
 app.get('/ping', async (req, res) => {

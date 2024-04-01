@@ -5,7 +5,26 @@
     <link href="/src/index.css" rel="stylesheet">
 </head>
 <body>
-    <script type="text/javascript" src="/src/index.js"></script>
-    <table id="table"></table>
+    <table id="table" class="blueTable">
+        <tr>
+            <td>PORT</td>
+            <td>URL</td>
+            <td>LAST POST</td>
+            <td>PREVIOUS POST</td>
+        </tr>
+        <% data.forEach(function(row) { %>
+            <tr>
+                <% for (const key in row) { %>
+                    <td>
+                        <% if (key === 'last_post' || key === 'previous_post') { %>
+                            <%= new Date(row[key]).toLocaleString() %>
+                        <% } else { %>
+                            <%= row[key] %>
+                        <% } %>
+                    </td>
+                <% } %>
+            </tr>
+        <% }); %>
+    </table>
 </body>
 </html>
