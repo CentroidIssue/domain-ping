@@ -115,16 +115,16 @@ app.listen(port, () => {
 // Create a WebSocket server
 const wss = new WebSocket.Server({ port: 1772 });
 
-wss.on('connection', ws => {
-    console.log('Client connected');
-    setInterval(() => {
-        database.getData().then(data => {
-            ws.send(JSON.stringify(data));
-        }).catch(err => {
-            console.error(err);
-        });
-    }, 1000);
-});
+// wss.on('connection', ws => {
+//     console.log('Client connected');
+//     setInterval(() => {
+//         database.getData().then(data => {
+//             ws.send(JSON.stringify(data));
+//         }).catch(err => {
+//             console.error(err);
+//         });
+//     }, 1000);
+// });
 
 async function getBody(response){
     let body;
