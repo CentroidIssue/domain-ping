@@ -20,7 +20,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
 app.get('/', async (req, res) => {
-    time = new Date();
+    let time = new Date();
     console.log("GET /" + time);
     try {
         const data = await database.getData();
