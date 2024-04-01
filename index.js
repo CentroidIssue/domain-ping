@@ -19,6 +19,8 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
 app.get('/', async (req, res) => {
+    time = new Date();
+    console.log("GET /" + time);
     try {
         const data = await database.getData();
         res.render('index.ejs', { title: 'Domain Pinger', data: data });
@@ -31,17 +33,16 @@ app.get('/', async (req, res) => {
 app.get('/ping', async (req, res) => {
     try {
         const data = await database.getData();
-        const promises = data.map(async element => {
-            database.updateLastPost(element.id).then().catch(err => {
-                console.error(err);
-            });
-            fetch(element.value);
+        const promises = data.map(element => {
+            return database.updateLastPost(element.id)
+                .then(() => fetch(element.value))
+                .catch(err => console.error(err));
         });
-        const ret = await Promise.all(promises);
+        await Promise.all(promises);
         res.send("Ping all domains");
     } catch (err) {
         console.error(err);
-        res.status(500).send(err);
+        res.send(err);
     }
 });
 
