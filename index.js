@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const WebSocket = require('ws');
 const Database = require('./database.js');
+const { time } = require('console');
 
 // Creating an database object
 const database = new Database.Database();
@@ -30,12 +31,23 @@ app.get('/', async (req, res) => {
     }
 });
 
+const fetchWithTimeout = (url, options, timeout = 5000) => {
+    return Promise.race([
+        fetch(url, options),
+        new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('timeout')), timeout)
+        )
+    ]);
+};
+
 app.get('/ping', async (req, res) => {
     try {
+        //await 1 second before pinging
+        await new Promise(resolve => setTimeout(resolve, 500));
         const data = await database.getData();
         const promises = data.map(element => {
             return database.updateLastPost(element.id)
-                .then(() => fetch(element.value))
+                .then(() => fetchWithTimeout(element.value))
                 .catch(err => console.error(err));
         });
         await Promise.all(promises);
